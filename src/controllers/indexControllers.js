@@ -1,3 +1,5 @@
+import User from "../models/userModels.js";
+
 function indexController(app, bd) {
   app.get("/", (req, res) => {
     try {
@@ -16,18 +18,25 @@ function indexController(app, bd) {
     }
   });
 
-  app.post("Usuarios", (req, res) => {
+  app.post("/", (req, res) => {
     try {
-      const SQL = `SELECT * FROM usuarios`;
+      const SQL = `INSERT INTO usuarios(id, nome, email, senha) VALUES(?,?,?,?) `;
+      const newUser = new User(req.body.nome, req.body.senha, req.body.email);
+      console.log(newUser);
+
       new Promise((resolve, reject) => {
-        bd.all(SQL, (erro, rows) => {
-          if (!erro) {
-            resolve(rows);
-          } else {
-            reject(erro);
+        bd.all(
+          SQL,
+          [newUser.id, newUser.nome, newUser.email, newUser.senha],
+          (erro) => {
+            if (!erro) {
+              resolve("usuario criado");
+            } else {
+              reject(erro);
+            }
           }
-        });
-      }).then((result) => res.json(result));
+        );
+      }).then((result) => res.send(result));
     } catch (error) {
       console.log(error);
     }

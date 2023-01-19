@@ -38,7 +38,7 @@ CREATE TABLE carrinho (
     status VARCHAR(20),
     FOREIGN KEY(produtos_id) REFERENCES produtos(id),
     FOREIGN KEY(usuarios_id) REFERENCES usuarios(id)
-)`;
+')`;
 
 
 
