@@ -1,44 +1,25 @@
 import User from "../models/userModels.js";
+import UsersDAO from "../UsersDAO/UsersDAO.js";
 
 function indexController(app, bd) {
-  app.get("/", (req, res) => {
+  const newUsersDAO = new UsersDAO(bd);
+  app.get("/", async (req, res) => {
     try {
-      const SQL = `SELECT * FROM usuarios`;
-      new Promise((resolve, reject) => {
-        bd.all(SQL, (erro, rows) => {
-          if (!erro) {
-            resolve(rows);
-          } else {
-            reject(erro);
-          }
-        });
-      }).then((result) => res.json(result));
-    } catch (error) {
-      console.log(error);
+      const userdata = await newUsersDAO.pegarTodosDados();
+      res.json(userdata);
+    } catch (erro) {
+      console.log(erro);
     }
   });
 
-  app.post("/", (req, res) => {
+  app.post("/", async (req, res) => {
     try {
-      const SQL = `INSERT INTO usuarios(id, nome, email, senha) VALUES(?,?,?,?) `;
       const newUser = new User(req.body.nome, req.body.senha, req.body.email);
+      const newdataUser = await newUsersDAO.inserirDadosnovos(newUser);
       console.log(newUser);
-
-      new Promise((resolve, reject) => {
-        bd.all(
-          SQL,
-          [newUser.id, newUser.nome, newUser.email, newUser.senha],
-          (erro) => {
-            if (!erro) {
-              resolve("usuario criado");
-            } else {
-              reject(erro);
-            }
-          }
-        );
-      }).then((result) => res.send(result));
-    } catch (error) {
-      console.log(error);
+      res.json(newdataUser);
+    } catch (erro) {
+      console.log(erro);
     }
   });
 

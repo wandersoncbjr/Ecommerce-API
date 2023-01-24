@@ -16,7 +16,7 @@ function enableForeignKey() {
 //==== Usuários
 const usuarios = `
 CREATE TABLE usuarios (
-    id INTEGER PRIMARY KEY,
+    id VARCHAR(100) PRIMARY KEY,
     nome VARCHAR(150),
     email VARCHAR(150),
     senha VARCHAR(100)
@@ -24,7 +24,7 @@ CREATE TABLE usuarios (
 
 const produtos = `
 CREATE TABLE produtos (
-    id INTEGER PRIMARY KEY,
+   id VARCHAR(100) PRIMARY KEY,
     titulo VARCHAR(80),
     descricao VARCHAR(300),
     valor FLOAT(100)
@@ -32,13 +32,12 @@ CREATE TABLE produtos (
 
 const carrinho = `
 CREATE TABLE carrinho (
-    id INTEGER PRIMARY KEY,
-    produtos_id INTEGER,
-    usuarios_id INTEGER,
+   id VARCHAR(100) PRIMARY KEY,
+    produtos_id VARCHAR(100),
+    usuarios_id VARCHAR(100),
     status VARCHAR(20),
     FOREIGN KEY(produtos_id) REFERENCES produtos(id),
-    FOREIGN KEY(usuarios_id) REFERENCES usuarios(id)
-')`;
+    FOREIGN KEY(usuarios_id) REFERENCES usuarios(id))`;
 
 
 
